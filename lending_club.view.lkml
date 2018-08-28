@@ -1,5 +1,5 @@
-view: lendingtree {
-  sql_table_name: PUBLIC.Lendingtree ;;
+view: LendingClub {
+  sql_table_name: "LENDINGTREE"."PUBLIC"."Lendingtree" ;;
 
   dimension: addr_state {
     type: string
