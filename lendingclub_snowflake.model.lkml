@@ -11,3 +11,4 @@ datagroup: lendingclub_snowflake_default_datagroup {
 persist_with: lendingclub_snowflake_default_datagroup
 
 explore: LendingClub {}
+explore: lending_club_scored {}
