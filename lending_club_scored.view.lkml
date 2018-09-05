@@ -1,5 +1,5 @@
 view: lending_club_scored {
-  sql_table_name: PUBLIC.LendingTree_Scored ;;
+  sql_table_name: "LENDINGTREE"."PUBLIC"."LendingTree_Scored" ;;
 
   dimension: addr_state {
     type: string
