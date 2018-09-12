@@ -11,6 +11,13 @@ view: lending_club_scored {
     sql: ${TABLE}."annual_inc" ;;
   }
 
+  dimension: annual_income_brackets {
+    type: tier
+    sql: ${annual_inc} ;;
+    tiers: [10000,40000,60000,100000]
+    style: integer
+  }
+
   dimension: delinq_2yrs {
     type: string
     sql: ${TABLE}."delinq_2yrs" ;;
@@ -24,6 +31,19 @@ view: lending_club_scored {
   dimension: dti {
     type: string
     sql: ${TABLE}."dti" ;;
+  }
+
+  dimension: dti_tiers {
+    type: tier
+    sql: ${dti} ;;
+    tiers: [5,10,15,20]
+    style: integer
+  }
+
+  measure: average_dti {
+    type: average
+    sql: ${dti} / 100 ;;
+    value_format_name: percent_2
   }
 
   dimension: earliest_cr_line {
@@ -196,6 +216,19 @@ view: lending_club_scored {
     sql: ${TABLE}."revol_bal" ;;
   }
 
+  dimension: balance_percentage_of_annual_income {
+    type: number
+    sql:  ${revol_bal}/NULLIF(${annual_inc},0);;
+    value_format_name: percent_2
+  }
+
+  dimension: balance_percentage_of_annual_income_tiers {
+    type: tier
+    sql:  ${balance_percentage_of_annual_income}*100;;
+    tiers: [1,5,10,20,50,100]
+    style: integer
+  }
+
   dimension: revol_util {
     type: string
     sql: ${TABLE}."revol_util" ;;
@@ -240,4 +273,17 @@ view: lending_club_scored {
     type: count
     drill_fields: []
   }
+
+  measure: average_loan_amount {
+    type: average
+    sql: ${loan_amnt} ;;
+    value_format_name: usd
+  }
+
+  measure:average_revolving_balance {
+    type: average
+    sql: ${revol_bal} ;;
+    value_format_name: usd
+  }
+
 }
