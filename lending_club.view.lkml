@@ -3,12 +3,20 @@ view: LendingClub {
 
   dimension: addr_state {
     type: string
+    map_layer_name: us_states
     sql: ${TABLE}."addr_state" ;;
   }
 
   dimension: annual_inc {
-    type: string
-    sql: ${TABLE}."annual_inc" ;;
+    type: number
+    sql: CASE WHEN ${TABLE}."annual_inc" = 'NA' THEN NULL ELSE ${TABLE}."annual_inc" END ;;
+  }
+
+  dimension: annual_income_brackets {
+    type: tier
+    sql: ${annual_inc} ;;
+    tiers: [10000,40000,60000,100000]
+    style: integer
   }
 
   dimension: delinq_2yrs {
@@ -131,6 +139,19 @@ view: LendingClub {
     sql: ${TABLE}."revol_bal" ;;
   }
 
+  dimension: balance_percentage_of_annual_income {
+    type: number
+    sql:  ${revol_bal}/NULLIF(${annual_inc},0);;
+    value_format_name: percent_2
+  }
+
+  dimension: balance_percentage_of_annual_income_tiers {
+    type: tier
+    sql:  ${balance_percentage_of_annual_income}*100;;
+    tiers: [1,5,10,20,50,100]
+    style: integer
+  }
+
   dimension: revol_util {
     type: string
     sql: ${TABLE}."revol_util" ;;
@@ -175,4 +196,19 @@ view: LendingClub {
     type: count
     drill_fields: []
   }
-}
+
+  measure: average_loan_amount {
+    type: average
+    sql: ${loan_amnt} ;;
+    value_format_name: usd
+  }
+
+  measure:average_revolving_balance {
+    type: average
+    sql: ${revol_bal} ;;
+    value_format_name: usd
+  }
+
+
+
+  }
