@@ -30,9 +30,24 @@ view: LendingClub {
   }
 
   dimension: dti {
-    type: string
+    type: number
     sql: ${TABLE}."dti" ;;
+    value_format_name: decimal_2
   }
+
+  dimension: dti_tiers {
+    type: tier
+    sql: ${dti} ;;
+    tiers: [5,10,15,20]
+    style: integer
+  }
+
+  measure: average_dti {
+    type: average
+    sql: ${dti} / 100 ;;
+    value_format_name: percent_2
+  }
+
 
   dimension: earliest_cr_line {
     type: string
