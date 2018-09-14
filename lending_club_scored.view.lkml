@@ -3,12 +3,13 @@ view: lending_club_scored {
 
   dimension: addr_state {
     type: string
+    map_layer_name: us_states
     sql: ${TABLE}."addr_state" ;;
   }
 
   dimension: annual_inc {
     type: string
-    sql: ${TABLE}."annual_inc" ;;
+    sql: CASE WHEN ${TABLE}."annual_inc" = 'NA' THEN NULL ELSE ${TABLE}."annual_inc" END ;;
   }
 
   dimension: annual_income_brackets {
@@ -129,6 +130,13 @@ view: lending_club_scored {
   dimension: positive_probability {
     type: number
     sql: ${TABLE}."Positive Probability" ;;
+  }
+
+  dimension: risk_tiers {
+    type: tier
+    sql: ${positive_probability}*100 ;;
+    tiers: [5,10,20,30,50]
+    style: integer
   }
 
   dimension: prediction {
@@ -271,7 +279,7 @@ view: lending_club_scored {
 
   measure: count {
     type: count
-    drill_fields: []
+    drill_fields: [loan_amnt,addr_state,addr_state,dti,revol_bal,reason_1_feature,prediction,positive_probability]
   }
 
   measure: average_loan_amount {
@@ -284,6 +292,12 @@ view: lending_club_scored {
     type: average
     sql: ${revol_bal} ;;
     value_format_name: usd
+  }
+
+  measure: average_probability {
+    type: average
+    sql: ${positive_probability} ;;
+    value_format_name: percent_2
   }
 
 }
