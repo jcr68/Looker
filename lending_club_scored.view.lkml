@@ -279,7 +279,7 @@ view: lending_club_scored {
 
   measure: count {
     type: count
-    drill_fields: [loan_amnt,addr_state,addr_state,dti,revol_bal,reason_1_feature,prediction,positive_probability]
+    drill_fields: [loan_amnt,desc,positive_probability,reason_1_feature,reason_1_strength,reason_1_strength_numeric,reason_1_value,dti,revol_bal,prediction]
   }
 
   measure: average_loan_amount {
