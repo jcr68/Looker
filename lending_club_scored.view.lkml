@@ -286,18 +286,21 @@ view: lending_club_scored {
     type: average
     sql: ${loan_amnt} ;;
     value_format_name: usd
+    drill_fields: [loan_amnt,desc,positive_probability,reason_1_feature,reason_1_strength,reason_1_strength_numeric,reason_1_value,dti,revol_bal,prediction]
   }
 
   measure:average_revolving_balance {
     type: average
     sql: ${revol_bal} ;;
     value_format_name: usd
+    drill_fields: [loan_amnt,desc,positive_probability,reason_1_feature,reason_1_strength,reason_1_strength_numeric,reason_1_value,dti,revol_bal,prediction]
   }
 
   measure: average_probability {
     type: average
     sql: ${positive_probability} ;;
     value_format_name: percent_2
+    drill_fields: [loan_amnt,desc,positive_probability,reason_1_feature,reason_1_strength,reason_1_strength_numeric,reason_1_value,dti,revol_bal,prediction]
   }
 
 }
